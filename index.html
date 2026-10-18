@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Embedded Interview Mastery</title>
+<style>
+:root{--bg:#0a0f1d;--panel:#0f1729;--line:#1f2c4a;--text:#d8e2f6;--muted:#8392b6;--dim:#56648a;
+--cyan:#00f0ff;--amber:#ffaa00;--green:#00ff66;--violet:#b48cff;--red:#ff4d6d;
+--mono:ui-monospace,"JetBrains Mono","Cascadia Code",Consolas,monospace;--sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;
+background-image:linear-gradient(rgba(0,240,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,240,255,.035) 1px,transparent 1px);background-size:32px 32px;min-height:100vh}
+.wrap{max-width:1180px;margin:0 auto;padding:40px 16px 60px}
+.kicker{font:600 11px var(--mono);letter-spacing:.2em;color:var(--green)}
+h1{font-size:clamp(26px,4vw,40px);margin:8px 0 8px;letter-spacing:-.01em}
+.lead{color:var(--muted);max-width:760px;margin:0}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:26px 0 8px}
+.bar input{flex:1;min-width:200px;background:#070b16;border:1px solid var(--line);border-radius:10px;padding:10px 14px;color:var(--text);font:14px var(--mono)}
+.bar input:focus{outline:none;border-color:var(--cyan)}
+.prog{font:12px var(--mono);color:var(--muted)}
+.tier{margin-top:34px}
+.tier h2{font:700 13px var(--mono);letter-spacing:.18em;margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.tier h2 i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.tier p{margin:0 0 14px;color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+a.card{display:flex;flex-direction:column;gap:6px;text-decoration:none;color:var(--text);background:linear-gradient(180deg,var(--panel),#0d1426);
+border:1px solid var(--line);border-radius:12px;padding:16px;transition:border-color .2s,transform .2s,box-shadow .2s;position:relative}
+a.card:hover{border-color:var(--c);transform:translateY(-2px);box-shadow:0 0 22px color-mix(in srgb,var(--c) 22%,transparent)}
+.num{font:700 12px var(--mono);color:var(--c)}
+.card h3{margin:0;font-size:16.5px}
+.card .d{font-size:13px;color:var(--muted)}
+.chk{position:absolute;top:12px;right:12px;width:22px;height:22px;border-radius:6px;border:1px solid var(--line);background:#070b16;color:var(--green);
+font:700 13px var(--mono);display:grid;place-items:center;cursor:pointer}
+.chk.on{border-color:var(--green);background:rgba(0,255,102,.12)}
+.hide{display:none!important}
+.card.soon{display:flex;flex-direction:column;gap:6px;background:#0b1120;border:1px dashed var(--line);border-radius:12px;padding:16px;opacity:.55}
+.tips{margin-top:40px;border:1px solid var(--line);border-radius:12px;padding:18px;background:rgba(0,0,0,.25)}
+.tips h2{font:700 13px var(--mono);letter-spacing:.18em;margin:0 0 10px;color:var(--amber)}
+.tips ol{margin:0;padding-left:20px}.tips li{margin:6px 0;font-size:14.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">// EMBEDDED INTERVIEW MASTERY</div>
+  <h1>Study dashboards, foundations → interview rounds</h1>
+  <p class="lead">41 interactive dashboards (2 more coming later), from C and bit manipulation to architecture, Linux, safety, domain topics and the interview rounds themselves. Each has deep theory, a working simulator, debugging scenarios, a Q&amp;A bank and a cheat sheet. Tick a topic when you can answer its whole Q&amp;A bank out loud.</p>
+  <div class="bar"><input id="q" type="search" placeholder="filter topics… (e.g. cache, CAN, priority)"><span class="prog" id="prog"></span></div>
+  <div id="tiers"></div>
+  <div class="tips">
+    <h2>// HOW TO STUDY THIS</h2>
+    <ol>
+      <li>Read the Concepts tab top to bottom once; open every collapsed card.</li>
+      <li>Play with the simulator until you can predict its next step before pressing Step.</li>
+      <li>Do the scenarios cold. Your first pick is scored; read why the wrong options are wrong.</li>
+      <li>Answer each Q&amp;A out loud in under 2 minutes before revealing. That is the interview.</li>
+      <li>Revise from the Cheat Sheet the night before. Work through the tiers in order; for a firmware role, the core path is Tier 1 → Tier 2 → RTOS and Concurrency → the interview rounds in Tier 8.</li>
+    </ol>
+  </div>
+</div>
+<script>
+const SOON=["29", "35"];
+const T=[
+ {n:"TIER 1 — FOUNDATIONS",c:"var(--green)",d:"First-round screens test these. Start here.",items:[
+  ["01","c-for-embedded","C for Embedded","volatile, const, static, pointers, padding, promotions, UB, preprocessor."],
+  ["02","bit-manipulation","Bit Manipulation","Masks, register macros, endianness, popcount/CLZ, classic bit puzzles."],
+  ["03","number-representation","Number Representation","Two's complement, overflow, Q-format fixed point, IEEE-754 floats."],
+  ["04","digital-basics-gpio","Digital Basics & GPIO","Pin modes, pull-ups, debouncing, metastability, FSMs, keypads."]]},
+ {n:"TIER 2 — CORE MCU",c:"var(--cyan)",d:"Asked in every embedded interview.",items:[
+  ["05","memory-and-startup","Memory Architecture & Startup","Memory map, linker scripts, Reset_Handler → main(), stack/heap."],
+  ["06","interrupts-exceptions","Interrupts & Exceptions","NVIC, priorities, preemption, tail-chaining, ISR rules, HardFaults."],
+  ["07","timers-clocks-watchdog","Timers, Clocks & Watchdogs","Clock tree, PLL, PWM, input capture, SysTick, IWDG/WWDG."],
+  ["08","dma","DMA","Streams, circular/double buffering, cache coherency, UART+DMA."],
+  ["09","adc-dac","ADC & DAC","SAR, sampling time, Nyquist, oversampling, ENOB, DAC output."]]},
+ {n:"TIER 3 — COMMUNICATION",c:"var(--amber)",d:"Protocol-level detail down to individual bits.",items:[
+  ["10","uart-spi-i2c","UART · SPI · I²C","Framing, modes, pull-ups, clock stretching, bus recovery."],
+  ["11","can-canfd","CAN & CAN-FD","Arbitration, bit timing, error states, DBC, ISO-TP, UDS."],
+  ["12","usb","USB","Packets, transfer types, enumeration, descriptors, CDC/HID."],
+  ["13","wireless-iot","Wireless & IoT","BLE in depth, Wi-Fi, LTE-M/NB-IoT, MQTT, TLS, connectivity robustness."],
+  ["14","automotive-networks","Automotive Networks","LIN, FlexRay, Automotive Ethernet, SOME/IP, AUTOSAR COM, UDS, J1939."]]},
+ {n:"TIER 4 — SYSTEMS & RTOS",c:"var(--green)",d:"How firmware is structured, scheduled, stored, updated and powered.",items:[
+  ["15","rtos-internals","RTOS Internals","Scheduler, PendSV context switch, mutexes, priority inversion, RMS."],
+  ["16","concurrency-atomics","Concurrency & Atomics","Races, LDREX/STREX, barriers, memory order, lock-free queues."],
+  ["17","bootloader-fota","Bootloaders & FOTA","A/B slots, jump to app, rollback, secure boot, signatures."],
+  ["18","low-power","Low-Power Design","Sleep/Stop/Standby, WFI/WFE, current budgets, battery life."],
+  ["19","storage-filesystems","Storage & Filesystems","NOR/NAND, wear levelling, EEPROM emulation, LittleFS/FAT, power-fail safety."],
+  ["20","multicore-heterogeneous","Multicore & Heterogeneous","AMP/SMP, IPC, RPMsg, HSEM, cache coherency between cores."],
+  ["21","zephyr-rtos","Zephyr RTOS","west, Kconfig, devicetree, device model, kernel services, MCUboot."]]},
+ {n:"TIER 5 — ADVANCED",c:"var(--violet)",d:"The depth expected at top product, semiconductor and automotive companies.",items:[
+  ["22","cpu-architecture","CPU Architecture","Pipelines, hazards, branch prediction, caches, MMU, coherency."],
+  ["23","arm-architecture","ARM Architecture Deep Dive","Profiles, AAPCS, EL0–EL3, TrustZone, MPU, GIC, PAC/MTE."],
+  ["24","embedded-linux","Embedded Linux","Boot chain, device tree, drivers, IRQ bottom halves, Yocto."],
+  ["25","debugging-fault-analysis","Debugging & Fault Analysis","SWD/GDB, HardFault forensics, trace, field debugging."],
+  ["26","functional-safety-reliability","Functional Safety & Reliability","ISO 26262, ASIL, MISRA, watchdogs, ECC, E2E."],
+  ["27","hardware-software-interface","Hardware–Software Interface","Datasheets, schematics, GPIO electrics, board bring-up."],
+  ["28","embedded-security","Embedded Security","Crypto, secure boot, key storage, side-channel & glitch attacks, RDP."],
+  ["29","cpp-for-embedded","C++ for Embedded","RAII, vtables vs CRTP, templates, constexpr, what to avoid and why."],
+  ["30","os-fundamentals","OS Fundamentals","Processes, scheduling, synchronisation, deadlock, paging, TLB, IPC."]]},
+ {n:"TIER 6 — SOFTWARE CRAFT",c:"var(--cyan)",d:"How senior firmware engineers build, test and tune code.",items:[
+  ["31","data-structures-algorithms","Data Structures & Algorithms","Ring buffers, lists, heaps, pools, hashing, sorting under MCU limits."],
+  ["32","firmware-architecture-patterns","Firmware Architecture & Patterns","Layering, drivers, HSMs, active objects, observer, event loops."],
+  ["33","compiler-toolchain-build","Compiler, Toolchain & Build","Pipeline, optimisation surprises, linking, map files, Make/CMake."],
+  ["34","testing-ci-firmware","Testing & CI for Firmware","Unit tests on host, mocks, coverage/MC/DC, HIL, CI pipelines."],
+  ["35","python-test-automation","Python for Test & Automation","struct, pyserial, python-can, pytest HIL, log analysis."],
+  ["36","performance-power-profiling","Performance & Power Profiling","DWT, tracing, CPU load, optimisation, current measurement."]]},
+ {n:"TIER 7 — DOMAIN SPECIALISATIONS",c:"var(--amber)",d:"Signals, control, sensing and batteries: EV, robotics and wearables.",items:[
+  ["37","dsp-firmware","DSP for Firmware","FIR/IIR, biquads, FFT, windowing, fixed-point filters, CMSIS-DSP."],
+  ["38","control-motor-control","Control & Motor Control","PID with anti-windup, BLDC six-step, FOC (Clarke/Park), H-bridges."],
+  ["39","sensors-data-acquisition","Sensors & Data Acquisition","NTC/RTD, IMUs, calibration, complementary & Kalman fusion."],
+  ["40","battery-management-firmware","Battery Management Firmware","Protections, SoC/SoH, balancing, CC-CV, pack state machines."]]},
+ {n:"TIER 8 — THE INTERVIEW ROUNDS",c:"var(--red)",d:"Practise the formats that decide offers.",items:[
+  ["41","c-coding-round","C Coding Round","45+ classic problems, trace-and-predict, bug hunts, timed mocks."],
+  ["42","embedded-system-design-round","Embedded System Design Round","Framework, 8+ worked designs, design builder, mock timer."],
+  ["43","behavioural-project-deep-dive","Behavioural & Project Deep-Dive","Your projects as stories, STAR builder, mock deep-dive drills."]]}
+];
+let done={};try{done=JSON.parse(localStorage.getItem("emb-done")||"{}")}catch(e){}
+function save(){try{localStorage.setItem("emb-done",JSON.stringify(done))}catch(e){}}
+function render(){
+  const q=document.getElementById("q").value.toLowerCase();let total=0,ticked=0;
+  document.getElementById("tiers").innerHTML=T.map(t=>{
+    const cards=t.items.map(([n,s,h,d])=>{if(!SOON.includes(n)){total++;if(done[n])ticked++;}
+      const hit=!q||(n+h+d).toLowerCase().includes(q);
+      if(SOON.includes(n)) return `<div class="card soon${hit?"":" hide"}" style="--c:${t.c}"><span class="num">${n} · COMING LATER</span><h3>${h}</h3><span class="d">${d}</span></div>`;
+      return `<a class="card${hit?"":" hide"}" style="--c:${t.c}" href="${n}-${s}.html"><span class="num">${n}</span><h3>${h}</h3><span class="d">${d}</span>
+        <span class="chk${done[n]?" on":""}" data-n="${n}" role="checkbox" aria-checked="${!!done[n]}" title="Mark as mastered">${done[n]?"✓":""}</span></a>`}).join("");
+    return `<section class="tier"><h2 style="color:${t.c}"><i style="background:${t.c};box-shadow:0 0 8px ${t.c}"></i>${t.n}</h2><p>${t.d}</p><div class="grid">${cards}</div></section>`}).join("");
+  document.getElementById("prog").textContent=`${ticked} / ${total} mastered`;
+  document.querySelectorAll(".chk").forEach(c=>c.addEventListener("click",e=>{e.preventDefault();e.stopPropagation();const n=c.dataset.n;done[n]=!done[n];save();render();}));
+}
+document.getElementById("q").addEventListener("input",render);render();
+</script>
+</body>
+</html>
